@@ -3,7 +3,7 @@
 API REST para gerenciar livros, autores, categorias, usuários e empréstimos.
 Projeto final de Desenvolvimento de Web Services (Senac) - Parte 1.
 
-**Aluno:** SEU NOME
+**Aluno:** André Luiz Jesus Martins
 
 ## Tecnologias
 - Java 17
