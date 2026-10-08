@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 @Schema(description = "Usuário cadastrado na biblioteca, apto a realizar empréstimos de livros")
@@ -16,9 +17,10 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Schema(description = "Nome completo do usuário", example = "João Silva", minLength = 3, maxLength = 100, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Nome completo do usuário (apenas letras, espaços, ponto, apóstrofo e hífen)", example = "João Silva", minLength = 3, maxLength = 100, pattern = "^[\\p{L}][\\p{L} .'-]*$", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "O nome é obrigatório")
     @Size(min = 3, max = 100, message = "O nome deve ter entre 3 e 100 caracteres")
+    @Pattern(regexp = "^[\\p{L}][\\p{L} .'-]*$", message = "O nome deve conter apenas letras")
     @Column(nullable = false)
     private String nome;
 
