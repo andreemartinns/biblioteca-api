@@ -77,8 +77,12 @@ public class OpenApiConfig {
                         "| Usuários | GET | `/usuarios/{id}` | Busca usuário por ID |\n" +
                         "| Usuários | PUT | `/usuarios/{id}` | Atualiza um usuário |\n" +
                         "| Usuários | DELETE | `/usuarios/{id}` | Exclui um usuário |\n" +
+                        "| Perfis | POST | `/perfis` | Cria um perfil |\n" +
                         "| Perfis | GET | `/perfis` | Lista todos os perfis |\n" +
                         "| Perfis | GET | `/perfis/{id}` | Busca perfil por ID |\n" +
+                        "| Perfis | GET | `/perfis/busca?telefone=` | Busca perfil por telefone |\n" +
+                        "| Perfis | PUT | `/perfis/{id}` | Atualiza um perfil |\n" +
+                        "| Perfis | DELETE | `/perfis/{id}` | Exclui um perfil |\n" +
                         "| Empréstimos | POST | `/emprestimos` | Registra um empréstimo |\n" +
                         "| Empréstimos | GET | `/emprestimos` | Lista todos os empréstimos |\n" +
                         "| Empréstimos | GET | `/emprestimos/{id}` | Busca empréstimo por ID |\n" +
@@ -166,7 +170,7 @@ public class OpenApiConfig {
                         "}\n" +
                         "```\n" +
                         "\n" +
-                        "Os perfis são consultados apenas por `GET /perfis` e `GET /perfis/{id}`.\n" +
+                        "O perfil também pode ser consultado, criado, atualizado e excluído diretamente pelo recurso `/perfis`.\n" +
                         "\n" +
                         "## Empréstimos\n" +
                         "\n" +
