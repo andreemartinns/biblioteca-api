@@ -16,15 +16,15 @@ public class Livro {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Schema(description = "Título do livro", example = "Dom Casmurro", maxLength = 150, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Título do livro", example = "Dom Casmurro", minLength = 1, maxLength = 150, requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "O título é obrigatório")
-    @Size(max = 150, message = "O título deve ter no máximo 150 caracteres")
+    @Size(min = 1, max = 150, message = "O título deve ter entre 1 e 150 caracteres")
     @Column(nullable = false)
     private String titulo;
 
-    @Schema(description = "Código ISBN do livro (10 a 17 caracteres)", example = "9788535911664", minLength = 10, maxLength = 17, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Código ISBN do livro (apenas números, 10 ou 13 dígitos)", example = "9788535911664", minLength = 10, maxLength = 13, pattern = "^(\\d{10}|\\d{13})$", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "O ISBN é obrigatório")
-    @Size(min = 10, max = 17, message = "O ISBN deve ter entre 10 e 17 caracteres")
+    @Pattern(regexp = "^(\\d{10}|\\d{13})$", message = "O ISBN deve conter apenas números (10 ou 13 dígitos)")
     @Column(nullable = false, unique = true)
     private String isbn;
 
