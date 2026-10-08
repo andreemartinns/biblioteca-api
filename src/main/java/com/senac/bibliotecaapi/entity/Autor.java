@@ -3,6 +3,7 @@ package com.senac.bibliotecaapi.entity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 @Schema(description = "Autor responsável pela escrita de um ou mais livros do acervo")
@@ -14,9 +15,10 @@ public class Autor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Schema(description = "Nome completo do autor", example = "Machado de Assis", minLength = 3, maxLength = 100, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Nome completo do autor (apenas letras, espaços, ponto, apóstrofo e hífen)", example = "Machado de Assis", minLength = 3, maxLength = 100, pattern = "^[\\p{L}][\\p{L} .'-]*$", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "O nome do autor é obrigatório")
     @Size(min = 3, max = 100, message = "O nome deve ter entre 3 e 100 caracteres")
+    @Pattern(regexp = "^[\\p{L}][\\p{L} .'-]*$", message = "O nome deve conter apenas letras")
     @Column(nullable = false)
     private String nome;
 
