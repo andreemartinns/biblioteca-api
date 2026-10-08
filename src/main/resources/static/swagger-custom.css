@@ -1,0 +1,46 @@
+body {
+    background: #f4efe6;
+}
+
+.swagger-ui .info .title {
+    color: #5b3a29;
+    font-family: Georgia, serif;
+    font-size: 2.2rem;
+}
+
+.swagger-ui .info p,
+.swagger-ui .info li {
+    color: #4a4a4a;
+}
+
+.swagger-ui .opblock-tag {
+    color: #5b3a29;
+    border-bottom: 2px solid #c9a66b;
+    font-family: Georgia, serif;
+}
+
+.swagger-ui .opblock.opblock-get .opblock-summary-method {
+    background: #2e7d6b;
+}
+.swagger-ui .opblock.opblock-post .opblock-summary-method {
+    background: #3a6ea5;
+}
+.swagger-ui .opblock.opblock-put .opblock-summary-method {
+    background: #c98a2b;
+}
+.swagger-ui .opblock.opblock-patch .opblock-summary-method {
+    background: #7a5ea8;
+}
+.swagger-ui .opblock.opblock-delete .opblock-summary-method {
+    background: #b23a3a;
+}
+
+.swagger-ui .btn.execute {
+    background-color: #5b3a29;
+    border-color: #5b3a29;
+    color: #fff;
+}
+
+.swagger-ui section.models {
+    border: 1px solid #c9a66b;
+}
