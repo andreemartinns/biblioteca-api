@@ -24,7 +24,7 @@ public class OpenApiConfig {
                         "- Todas as respostas usam codificação UTF-8 e formato JSON.\n" +
                         "- Projeto em Java com Spring Boot e Maven (pacote `com.senac.bibliotecaapi`).\n" +
                         "- O banco de dados é o H2 (em memória), acessível pelo H2 Console em `http://localhost:8080/h2-console`.\n" +
-                        "- A documentação interativa (Swagger UI) fica em `http://localhost:8080/swagger-ui.html` e a especificação OpenAPI em `http://localhost:8080/v3/api-docs`.\n" +
+                        "- A documentação interativa (Swagger UI) fica em `http://localhost:8080/swagger-docs.html` e a especificação OpenAPI em `http://localhost:8080/v3/api-docs`.\n" +
                         "\n" +
                         "## Required Headers\n" +
                         "\n" +
@@ -211,7 +211,7 @@ public class OpenApiConfig {
                         "## Testando a API\n" +
                         "\n" +
                         "1. Execute `BibliotecaApiApplication` no IntelliJ (porta 8080).\n" +
-                        "2. Importe a coleção `Biblioteca API.postman_collection.json` no Postman.\n" +
+                        "2. Importe a coleção `API de Gestão de Biblioteca Comunitária.postman_collection` no Postman.\n" +
                         "3. Execute as requisições na ordem: criar, listar, buscar, atualizar e, por último, excluir.\n" +
                         "\n" +
                         "Ordem sugerida entre as pastas: Categorias, Autores, Livros, Usuários e, por fim, Empréstimos, pois livros e empréstimos dependem de registros já criados.")
