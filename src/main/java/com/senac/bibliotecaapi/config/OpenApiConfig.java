@@ -64,6 +64,7 @@ public class OpenApiConfig {
                         "| Autores | POST | `/autores` | Cria um autor |\n" +
                         "| Autores | GET | `/autores` | Lista todos os autores |\n" +
                         "| Autores | GET | `/autores/{id}` | Busca autor por ID |\n" +
+                        "| Autores | GET | `/autores/busca?nome=` | Busca autor por nome |\n" +
                         "| Autores | PUT | `/autores/{id}` | Atualiza um autor |\n" +
                         "| Autores | DELETE | `/autores/{id}` | Exclui um autor |\n" +
                         "| Livros | POST | `/livros` | Cria um livro |\n" +
@@ -75,6 +76,7 @@ public class OpenApiConfig {
                         "| Usuários | POST | `/usuarios` | Cria um usuário (com perfil) |\n" +
                         "| Usuários | GET | `/usuarios` | Lista todos os usuários |\n" +
                         "| Usuários | GET | `/usuarios/{id}` | Busca usuário por ID |\n" +
+                        "| Usuários | GET | `/usuarios/busca?nome=` | Busca usuário por nome |\n" +
                         "| Usuários | PUT | `/usuarios/{id}` | Atualiza um usuário |\n" +
                         "| Usuários | DELETE | `/usuarios/{id}` | Exclui um usuário |\n" +
                         "| Perfis | POST | `/perfis` | Cria um perfil |\n" +
