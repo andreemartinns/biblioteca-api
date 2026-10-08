@@ -1,16 +1,20 @@
 package com.senac.bibliotecaapi.entity;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+@Schema(description = "Categoria literária usada para classificar os livros do acervo")
 @Entity
 public class Categoria {
 
+    @Schema(description = "Identificador único da categoria", example = "1", accessMode = Schema.AccessMode.READ_ONLY)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Schema(description = "Nome da categoria literária", example = "Romance", minLength = 3, maxLength = 50, requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "O nome da categoria é obrigatório")
     @Size(min = 3, max = 50, message = "O nome deve ter entre 3 e 50 caracteres")
     @Column(nullable = false, unique = true)

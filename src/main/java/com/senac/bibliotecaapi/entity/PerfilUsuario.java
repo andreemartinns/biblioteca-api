@@ -1,24 +1,30 @@
 package com.senac.bibliotecaapi.entity;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 
+@Schema(description = "Dados complementares de contato e nascimento de um usuário")
 @Entity
 public class PerfilUsuario {
 
+    @Schema(description = "Identificador único do perfil", example = "1", accessMode = Schema.AccessMode.READ_ONLY)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Schema(description = "Telefone de contato do usuário", example = "11999999999", maxLength = 20)
     @Size(max = 20, message = "O telefone deve ter no máximo 20 caracteres")
     private String telefone;
 
+    @Schema(description = "Endereço residencial do usuário", example = "Rua A, 100", maxLength = 200)
     @Size(max = 200, message = "O endereço deve ter no máximo 200 caracteres")
     private String endereco;
 
+    @Schema(description = "Data de nascimento do usuário, deve estar no passado", example = "2000-05-10", format = "date")
     @Past(message = "A data de nascimento deve estar no passado")
     private LocalDate dataNascimento;
 

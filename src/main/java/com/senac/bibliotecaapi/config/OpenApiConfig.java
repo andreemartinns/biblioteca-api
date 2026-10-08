@@ -1,6 +1,7 @@
 package com.senac.bibliotecaapi.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,11 +12,11 @@ public class OpenApiConfig {
     @Bean
     public OpenAPI apiInfo() {
         return new OpenAPI().info(new Info()
-                .title("API da Biblioteca")
+                .title("API de Gestão de Biblioteca Comunitária")
                 .version("1.0")
-                .description("# API Documentation\n" +
+                .description("# Gestão de Acervo e Empréstimos\n" +
                         "\n" +
-                        "A Biblioteca API é uma API REST para gerenciar o acervo e os empréstimos de uma biblioteca: categorias, autores, livros, usuários, perfis e empréstimos. Os dados são expostos em JSON, com links de navegação (HATEOAS) nas respostas.\n" +
+                        "API REST desenvolvida para bibliotecários e administradores de bibliotecas comunitárias e escolares gerenciarem o acervo de livros, o cadastro de autores e categorias, os usuários cadastrados e o controle de empréstimos e devoluções. Permite consultar a disponibilidade de livros, acompanhar prazos de devolução e identificar empréstimos em atraso. Os dados são expostos em JSON, com links de navegação (HATEOAS) nas respostas.\n" +
                         "\n" +
                         "## Endpoint Details\n" +
                         "\n" +
@@ -200,8 +201,10 @@ public class OpenApiConfig {
                         "| `200 OK` | Requisição bem-sucedida |\n" +
                         "| `201 Created` | Recurso criado |\n" +
                         "| `204 No Content` | Recurso excluído (quando aplicável) |\n" +
-                        "| `400 Bad Request` | Dados inválidos ou falha de validação |\n" +
+                        "| `400 Bad Request` | Dados inválidos, JSON malformado ou tipo incorreto |\n" +
                         "| `404 Not Found` | Recurso não encontrado |\n" +
+                        "| `409 Conflict` | Conflito com dados existentes (ex.: ISBN ou e-mail duplicado) |\n" +
+                        "| `500 Internal Server Error` | Erro inesperado no servidor |\n" +
                         "\n" +
                         "Os erros são tratados de forma centralizada pela classe `GlobalExceptionHandler`.\n" +
                         "\n" +
@@ -211,6 +214,9 @@ public class OpenApiConfig {
                         "2. Importe a coleção `Biblioteca API.postman_collection.json` no Postman.\n" +
                         "3. Execute as requisições na ordem: criar, listar, buscar, atualizar e, por último, excluir.\n" +
                         "\n" +
-                        "Ordem sugerida entre as pastas: Categorias, Autores, Livros, Usuários e, por fim, Empréstimos, pois livros e empréstimos dependem de registros já criados."));
+                        "Ordem sugerida entre as pastas: Categorias, Autores, Livros, Usuários e, por fim, Empréstimos, pois livros e empréstimos dependem de registros já criados.")
+                .contact(new Contact()
+                        .name("André Luiz Jesus Martins")
+                        .email("andreemartinns2@gmail.com")));
     }
 }

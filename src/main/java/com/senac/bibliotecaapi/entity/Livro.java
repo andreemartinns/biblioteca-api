@@ -1,37 +1,45 @@
 package com.senac.bibliotecaapi.entity;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
 import java.util.HashSet;
 import java.util.Set;
 
+@Schema(description = "Livro pertencente ao acervo da biblioteca, vinculado a uma categoria e um ou mais autores")
 @Entity
 public class Livro {
 
+    @Schema(description = "Identificador único do livro", example = "1", accessMode = Schema.AccessMode.READ_ONLY)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Schema(description = "Título do livro", example = "Dom Casmurro", maxLength = 150, requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "O título é obrigatório")
     @Size(max = 150, message = "O título deve ter no máximo 150 caracteres")
     @Column(nullable = false)
     private String titulo;
 
+    @Schema(description = "Código ISBN do livro (10 a 17 caracteres)", example = "9788535911664", minLength = 10, maxLength = 17, requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "O ISBN é obrigatório")
     @Size(min = 10, max = 17, message = "O ISBN deve ter entre 10 e 17 caracteres")
     @Column(nullable = false, unique = true)
     private String isbn;
 
+    @Schema(description = "Ano em que o livro foi publicado", example = "1899", minimum = "1000", maximum = "2100")
     @Min(value = 1000, message = "Ano inválido")
     @Max(value = 2100, message = "Ano inválido")
     private Integer anoPublicacao;
 
+    @Schema(description = "Categoria literária do livro", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "A categoria é obrigatória")
     @ManyToOne
     @JoinColumn(name = "categoria_id", nullable = false)
     private Categoria categoria;
 
+    @Schema(description = "Conjunto de autores responsáveis pelo livro (relação muitos-para-muitos)")
     @ManyToMany
     @JoinTable(
             name = "livro_autor",
