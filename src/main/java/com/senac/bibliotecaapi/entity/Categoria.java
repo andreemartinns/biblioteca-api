@@ -3,6 +3,7 @@ package com.senac.bibliotecaapi.entity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 @Schema(description = "Categoria literária usada para classificar os livros do acervo")
@@ -14,9 +15,10 @@ public class Categoria {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Schema(description = "Nome da categoria literária", example = "Romance", minLength = 3, maxLength = 50, requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Nome da categoria literária (apenas letras, espaços, ponto, apóstrofo e hífen)", example = "Romance", minLength = 3, maxLength = 50, pattern = "^[\\p{L}][\\p{L} .'-]*$", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "O nome da categoria é obrigatório")
     @Size(min = 3, max = 50, message = "O nome deve ter entre 3 e 50 caracteres")
+    @Pattern(regexp = "^[\\p{L}][\\p{L} .'-]*$", message = "O nome da categoria deve conter apenas letras")
     @Column(nullable = false, unique = true)
     private String nome;
 
