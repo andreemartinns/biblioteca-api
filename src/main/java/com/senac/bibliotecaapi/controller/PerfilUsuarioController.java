@@ -3,9 +3,11 @@ package com.senac.bibliotecaapi.controller;
 import com.senac.bibliotecaapi.entity.PerfilUsuario;
 import com.senac.bibliotecaapi.service.PerfilUsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.EntityModel;
@@ -33,14 +35,16 @@ public class PerfilUsuarioController {
     @Operation(summary = "Listar perfis", description = "Retorna os perfis de forma paginada, com links HATEOAS")
     @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso")
     @GetMapping
-    public PagedModel<EntityModel<PerfilUsuario>> listar(Pageable pageable) {
+    public PagedModel<EntityModel<PerfilUsuario>> listar(@ParameterObject Pageable pageable) {
         return paraPagedModel(service.listar(pageable));
     }
 
     @Operation(summary = "Buscar perfis por telefone", description = "Filtra perfis cujo telefone contém o texto informado")
     @ApiResponse(responseCode = "200", description = "Busca realizada com sucesso")
     @GetMapping("/busca")
-    public PagedModel<EntityModel<PerfilUsuario>> buscarPorTelefone(@RequestParam String telefone, Pageable pageable) {
+    public PagedModel<EntityModel<PerfilUsuario>> buscarPorTelefone(
+            @Parameter(description = "Texto a buscar no telefone", example = "11999") @RequestParam String telefone,
+            @ParameterObject Pageable pageable) {
         return paraPagedModel(service.buscarPorTelefone(telefone, pageable));
     }
 

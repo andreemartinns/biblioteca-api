@@ -3,9 +3,11 @@ package com.senac.bibliotecaapi.controller;
 import com.senac.bibliotecaapi.entity.Autor;
 import com.senac.bibliotecaapi.service.AutorService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.EntityModel;
@@ -33,14 +35,16 @@ public class AutorController {
     @Operation(summary = "Listar autores", description = "Retorna os autores de forma paginada, com links HATEOAS")
     @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso")
     @GetMapping
-    public PagedModel<EntityModel<Autor>> listar(Pageable pageable) {
+    public PagedModel<EntityModel<Autor>> listar(@ParameterObject Pageable pageable) {
         return paraPagedModel(service.listar(pageable));
     }
 
     @Operation(summary = "Buscar autores por nome", description = "Filtra autores cujo nome contém o texto informado")
     @ApiResponse(responseCode = "200", description = "Busca realizada com sucesso")
     @GetMapping("/busca")
-    public PagedModel<EntityModel<Autor>> buscarPorNome(@RequestParam String nome, Pageable pageable) {
+    public PagedModel<EntityModel<Autor>> buscarPorNome(
+            @Parameter(description = "Texto a buscar no nome", example = "Machado") @RequestParam String nome,
+            @ParameterObject Pageable pageable) {
         return paraPagedModel(service.buscarPorNome(nome, pageable));
     }
 

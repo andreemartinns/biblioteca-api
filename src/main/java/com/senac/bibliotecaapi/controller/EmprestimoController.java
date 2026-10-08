@@ -4,9 +4,11 @@ import com.senac.bibliotecaapi.entity.Emprestimo;
 import com.senac.bibliotecaapi.entity.StatusEmprestimo;
 import com.senac.bibliotecaapi.service.EmprestimoService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.EntityModel;
@@ -34,14 +36,17 @@ public class EmprestimoController {
     @Operation(summary = "Listar empréstimos", description = "Retorna os empréstimos de forma paginada, com links HATEOAS")
     @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso")
     @GetMapping
-    public PagedModel<EntityModel<Emprestimo>> listar(Pageable pageable) {
+    public PagedModel<EntityModel<Emprestimo>> listar(@ParameterObject Pageable pageable) {
         return paraPagedModel(service.listar(pageable));
     }
 
     @Operation(summary = "Filtrar empréstimos por status", description = "Status possíveis: ATIVO, DEVOLVIDO, ATRASADO")
     @ApiResponse(responseCode = "200", description = "Busca realizada com sucesso")
+    @ApiResponse(responseCode = "400", description = "Status inválido")
     @GetMapping("/status/{status}")
-    public PagedModel<EntityModel<Emprestimo>> buscarPorStatus(@PathVariable StatusEmprestimo status, Pageable pageable) {
+    public PagedModel<EntityModel<Emprestimo>> buscarPorStatus(
+            @Parameter(description = "Status do empréstimo", example = "ATIVO") @PathVariable StatusEmprestimo status,
+            @ParameterObject Pageable pageable) {
         return paraPagedModel(service.buscarPorStatus(status, pageable));
     }
 
