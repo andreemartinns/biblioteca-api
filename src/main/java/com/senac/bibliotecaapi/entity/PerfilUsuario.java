@@ -3,6 +3,7 @@ package com.senac.bibliotecaapi.entity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
@@ -16,8 +17,8 @@ public class PerfilUsuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Schema(description = "Telefone de contato do usuário", example = "11999999999", maxLength = 20)
-    @Size(max = 20, message = "O telefone deve ter no máximo 20 caracteres")
+    @Schema(description = "Telefone de contato do usuário (apenas números, com DDD)", example = "11999999999", minLength = 10, maxLength = 11, pattern = "^\\d{10,11}$")
+    @Pattern(regexp = "^\\d{10,11}$", message = "O telefone deve conter apenas números (10 ou 11 dígitos, com DDD)")
     private String telefone;
 
     @Schema(description = "Endereço residencial do usuário", example = "Rua A, 100", maxLength = 200)
