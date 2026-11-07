@@ -1,5 +1,7 @@
 package com.senac.bibliotecaapi.controller;
 
+import com.senac.bibliotecaapi.dto.LivroV2;
+import com.senac.bibliotecaapi.entity.Autor;
 import com.senac.bibliotecaapi.entity.Livro;
 import com.senac.bibliotecaapi.service.LivroService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -55,6 +57,24 @@ public class LivroController {
     public ResponseEntity<EntityModel<Livro>> buscar(@PathVariable Long id) {
         return service.buscarPorId(id)
                 .map(l -> ResponseEntity.ok(comLinks(l)))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @Operation(summary = "Buscar livro por ID (versão 2)",
+            description = "Requer o cabeçalho X-API-Version: 2. Retorna uma resposta resumida, com o nome da categoria "
+                    + "e os nomes dos autores. Sem o cabeçalho, ou com o valor 1, é usada a versão 1.")
+    @ApiResponse(responseCode = "200", description = "OK: livro encontrado")
+    @ApiResponse(responseCode = "404", description = "Not Found: livro não encontrado")
+    @GetMapping(value = "/{id}", headers = "X-API-Version=2")
+    public ResponseEntity<LivroV2> buscarV2(@PathVariable Long id) {
+        return service.buscarPorId(id)
+                .map(l -> ResponseEntity.ok(new LivroV2(
+                        l.getId(),
+                        l.getTitulo(),
+                        l.getIsbn(),
+                        l.getAnoPublicacao(),
+                        l.getCategoria().getNome(),
+                        l.getAutores().stream().map(Autor::getNome).toList())))
                 .orElse(ResponseEntity.notFound().build());
     }
 
