@@ -4,10 +4,12 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
@@ -59,6 +61,26 @@ public class GlobalExceptionHandler {
         corpo.put("status", 400);
         corpo.put("erro", "Valor inválido para o parâmetro '" + ex.getName() + "'");
         return ResponseEntity.badRequest().body(corpo);
+    }
+
+    // Rota inexistente
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<Map<String, Object>> tratarNaoEncontrado(NoResourceFoundException ex) {
+        Map<String, Object> corpo = new LinkedHashMap<>();
+        corpo.put("timestamp", LocalDateTime.now());
+        corpo.put("status", 404);
+        corpo.put("erro", "Not Found: rota inexistente");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(corpo);
+    }
+
+    // Método HTTP não suportado na rota
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<Map<String, Object>> tratarMetodoInvalido(HttpRequestMethodNotSupportedException ex) {
+        Map<String, Object> corpo = new LinkedHashMap<>();
+        corpo.put("timestamp", LocalDateTime.now());
+        corpo.put("status", 405);
+        corpo.put("erro", "Method Not Allowed: método HTTP não suportado nesta rota");
+        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(corpo);
     }
 
     // Qualquer outro erro inesperado
