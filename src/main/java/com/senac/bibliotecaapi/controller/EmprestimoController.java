@@ -5,6 +5,7 @@ import com.senac.bibliotecaapi.entity.StatusEmprestimo;
 import com.senac.bibliotecaapi.service.EmprestimoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -63,6 +64,9 @@ public class EmprestimoController {
     @Operation(summary = "Registrar empréstimo", description = "Cria o empréstimo com status ATIVO")
     @ApiResponse(responseCode = "201", description = "Empréstimo registrado")
     @ApiResponse(responseCode = "400", description = "Dados inválidos")
+    @Parameter(in = ParameterIn.HEADER, name = "X-Idempotency-Key", required = true,
+            description = "Chave única da operação (ex.: um UUID). Repetir a mesma chave não cria um novo empréstimo.",
+            example = "a3f1c2d4-5b6e-4f7a-8b9c-0d1e2f3a4b5c")
     @PostMapping
     public ResponseEntity<EntityModel<Emprestimo>> criar(@Valid @RequestBody Emprestimo emprestimo) {
         Emprestimo salvo = service.salvar(emprestimo);
