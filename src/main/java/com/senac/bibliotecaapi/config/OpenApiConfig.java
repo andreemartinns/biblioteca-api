@@ -6,6 +6,7 @@ import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -24,11 +25,11 @@ public class OpenApiConfig {
                                 "\n" +
                                 "## Endpoint Details\n" +
                                 "\n" +
-                                "- A API roda localmente em `http://localhost:8080`.\n" +
+                                "- A API está publicada em `https://biblioteca-api-0ikp.onrender.com`.\n" +
                                 "- Todas as respostas usam codificação UTF-8 e formato JSON.\n" +
                                 "- Projeto em Java com Spring Boot e Maven (pacote `com.senac.bibliotecaapi`).\n" +
-                                "- O banco de dados é o H2 (em memória), acessível pelo H2 Console em `http://localhost:8080/h2-console`.\n" +
-                                "- A documentação interativa (Swagger UI) fica em `http://localhost:8080/swagger-docs.html` e a especificação OpenAPI em `http://localhost:8080/v3/api-docs`.\n" +
+                                "- O banco de dados é o H2 (em memória), acessível pelo H2 Console em `/h2-console`.\n" +
+                                "- A documentação interativa (Swagger UI) fica em `/swagger-docs.html` e a especificação OpenAPI em `/v3/api-docs`.\n" +
                                 "\n" +
                                 "## Autenticação e Cabeçalhos\n" +
                                 "\n" +
@@ -52,10 +53,10 @@ public class OpenApiConfig {
                                 "```json\n" +
                                 "{\n" +
                                 "  \"_links\": {\n" +
-                                "    \"self\": { \"href\": \"http://localhost:8080/categorias/1\" },\n" +
-                                "    \"atualizar\": { \"href\": \"http://localhost:8080/categorias/1\" },\n" +
-                                "    \"deletar\": { \"href\": \"http://localhost:8080/categorias/1\" },\n" +
-                                "    \"categorias\": { \"href\": \"http://localhost:8080/categorias\" }\n" +
+                                "    \"self\": { \"href\": \"https://biblioteca-api-0ikp.onrender.com/categorias/1\" },\n" +
+                                "    \"atualizar\": { \"href\": \"https://biblioteca-api-0ikp.onrender.com/categorias/1\" },\n" +
+                                "    \"deletar\": { \"href\": \"https://biblioteca-api-0ikp.onrender.com/categorias/1\" },\n" +
+                                "    \"categorias\": { \"href\": \"https://biblioteca-api-0ikp.onrender.com/categorias\" }\n" +
                                 "  },\n" +
                                 "  \"nome\": \"Romance\",\n" +
                                 "  \"id\": 1\n" +
@@ -202,7 +203,7 @@ public class OpenApiConfig {
                                 "{\n" +
                                 "  \"usuario\": { \"id\": 1 },\n" +
                                 "  \"livro\": { \"id\": 1 },\n" +
-                                "  \"dataPrevista\": \"2026-10-20\"\n" +
+                                "  \"dataPrevista\": \"2026-12-20\"\n" +
                                 "}\n" +
                                 "```\n" +
                                 "\n" +
@@ -238,14 +239,17 @@ public class OpenApiConfig {
                                 "\n" +
                                 "## Testando a API\n" +
                                 "\n" +
-                                "1. Execute `BibliotecaApiApplication` no IntelliJ (porta 8080).\n" +
-                                "2. Importe a coleção `API de Gestão de Biblioteca Comunitária.postman_collection` no Postman.\n" +
+                                "1. Abra o Swagger UI em `/swagger-docs.html` e clique em **Authorize** para informar a chave.\n" +
+                                "2. Ou importe a coleção `API de Gestão de Biblioteca Comunitária.postman_collection` no Postman.\n" +
                                 "3. Execute as requisições na ordem: criar, listar, buscar, atualizar e, por último, excluir.\n" +
                                 "\n" +
                                 "Ordem sugerida entre as pastas: Categorias, Autores, Livros, Usuários e, por fim, Empréstimos, pois livros e empréstimos dependem de registros já criados.")
                         .contact(new Contact()
                                 .name("André Luiz Jesus Martins")
                                 .email("andreemartinns2@gmail.com")))
+                .addServersItem(new Server()
+                        .url("https://biblioteca-api-0ikp.onrender.com")
+                        .description("Servidor de produção (Render)"))
                 .components(new Components().addSecuritySchemes("ApiKeyAuth",
                         new SecurityScheme()
                                 .type(SecurityScheme.Type.APIKEY)
