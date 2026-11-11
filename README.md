@@ -4,6 +4,18 @@ API REST para gerenciar livros, autores, categorias, usuários e empréstimos. P
 
 **Aluno:** André Luiz Jesus Martins
 
+## Links úteis
+
+- **Front-end (Vercel):** https://biblioteca-front-two.vercel.app
+- **API (Render):** https://biblioteca-api-0ikp.onrender.com
+- **Swagger UI (produção):** https://biblioteca-api-0ikp.onrender.com/swagger-docs.html
+- **Swagger UI (local):** http://localhost:8080/swagger-docs.html
+- **Repositório do front-end:** https://github.com/andreemartinns/biblioteca-front
+- Console H2 (local): http://localhost:8080/h2-console (JDBC URL: `jdbc:h2:mem:bibliotecadb`, usuário `sa`, senha vazia)
+- Chave ADMIN de demonstração: `admin-demo-key-123`
+
+> O servidor da Render é gratuito e "dorme" após alguns minutos sem uso. A primeira requisição pode levar cerca de 1 minuto.
+
 ## Tecnologias
 
 - Java 17
@@ -13,6 +25,7 @@ API REST para gerenciar livros, autores, categorias, usuários e empréstimos. P
 - Spring HATEOAS
 - Springdoc OpenAPI (Swagger)
 - Maven
+- Docker (deploy na Render)
 
 ## Como executar
 
@@ -20,11 +33,6 @@ API REST para gerenciar livros, autores, categorias, usuários e empréstimos. P
 2. Clone o repositório e entre na pasta do projeto.
 3. Execute: `./mvnw spring-boot:run` (Windows: `mvnw.cmd spring-boot:run`)
 4. A API sobe em `http://localhost:8080`.
-
-## Links úteis
-
-- Swagger UI (com CSS customizado): http://localhost:8080/swagger-docs.html
-- Console H2: http://localhost:8080/h2-console (JDBC URL: `jdbc:h2:mem:bibliotecadb`, usuário `sa`, senha vazia)
 
 ## Modelo de dados
 
@@ -53,7 +61,7 @@ Todas as listagens são paginadas (`?page=0&size=10&sort=nome,asc`) e retornam l
 
 - 400: dados inválidos ou cabeçalho obrigatório ausente
 - 401: API key ausente, inválida ou revogada
-- 403: chave sem nível de acesso suficiente
+- 403: chave sem nível de acesso suficiente ou origem CORS não permitida
 - 404: recurso ou rota não encontrados
 - 405: método HTTP não suportado
 - 409: conflito (valor duplicado ou registro em uso)
@@ -97,7 +105,7 @@ Limite de 30 requisições por 60 segundos por cliente (identificado pela API Ke
 
 ### 4. CORS
 
-Origens permitidas: `http://localhost:3000`, `http://localhost:5173` e `http://localhost:4200`. Métodos permitidos: GET, POST, PUT, PATCH, DELETE e OPTIONS. Configurável em `app.cors.allowed-origins`.
+Origens permitidas: `https://biblioteca-front-two.vercel.app`, `http://localhost:3000`, `http://localhost:5173` e `http://localhost:4200`. Métodos permitidos: GET, POST, PUT, PATCH, DELETE e OPTIONS. Configurável em `app.cors.allowed-origins`.
 
 ### 5. Versionamento (`X-API-Version`)
 
@@ -108,6 +116,15 @@ Origens permitidas: `http://localhost:3000`, `http://localhost:5173` e `http://l
 ### Limitações
 
 Chaves, idempotência e rate limit ficam em memória e são zerados ao reiniciar a aplicação. Em produção, usaria Redis e um banco persistente.
+
+## Front-end
+
+Interface em HTML, CSS e JavaScript puros, publicada na Vercel: https://biblioteca-front-two.vercel.app
+
+- Lista, cria e exclui livros (com paginação).
+- Registra empréstimos (envia `X-Idempotency-Key`) e devoluções.
+- Cadastra categorias, autores e usuários.
+- Gera uma chave de API pelo botão "Gerar chave" e a envia em `X-API-Key` nas operações de escrita.
 
 ## Testes
 

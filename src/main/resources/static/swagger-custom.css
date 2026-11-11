@@ -1,46 +1,291 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+
+:root {
+    --navy: #1d3557;
+    --navy-dark: #12233d;
+    --accent: #f4a261;
+    --bg: #eef1f6;
+    --card: #ffffff;
+    --line: #dde3ec;
+    --text: #1f2933;
+    --muted: #5b6776;
+}
+
 body {
-    background: #f4efe6;
+    background: var(--bg);
+    font-family: 'Inter', system-ui, sans-serif;
 }
 
+/* ---------- Barra do topo ---------- */
+.swagger-ui .topbar {
+    background: linear-gradient(120deg, var(--navy-dark), var(--navy));
+    border-bottom: 4px solid var(--accent);
+    padding: 12px 0;
+}
+.swagger-ui .topbar .download-url-wrapper input[type=text] {
+    border: 2px solid var(--accent);
+    border-radius: 8px 0 0 8px;
+}
+.swagger-ui .topbar .download-url-wrapper .download-url-button {
+    background: var(--accent);
+    color: var(--navy-dark);
+    font-weight: 700;
+    border-radius: 0 8px 8px 0;
+}
+
+/* ---------- Cabeçalho da documentação ---------- */
+.swagger-ui .info {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-top: 6px solid var(--navy);
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin: 32px 0 24px;
+    box-shadow: 0 6px 24px rgba(29, 53, 87, .08);
+}
 .swagger-ui .info .title {
-    color: #5b3a29;
-    font-family: Georgia, serif;
-    font-size: 2.2rem;
+    color: var(--navy);
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    font-size: 2.1rem;
+    letter-spacing: -0.02em;
 }
-
+.swagger-ui .info .title small.version-stamp {
+    background: var(--accent);
+    color: var(--navy-dark);
+}
 .swagger-ui .info p,
-.swagger-ui .info li {
-    color: #4a4a4a;
+.swagger-ui .info li,
+.swagger-ui .info td,
+.swagger-ui .info th {
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    line-height: 1.65;
+}
+.swagger-ui .info h1,
+.swagger-ui .info h2,
+.swagger-ui .info h3 {
+    color: var(--navy);
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+}
+.swagger-ui .info h2 {
+    margin-top: 34px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--line);
+    position: relative;
+}
+.swagger-ui .info h2::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 56px;
+    height: 2px;
+    background: var(--accent);
 }
 
-.swagger-ui .opblock-tag {
-    color: #5b3a29;
-    border-bottom: 2px solid #c9a66b;
-    font-family: Georgia, serif;
+/* tabelas dentro da descrição */
+.swagger-ui .info table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 14px 0 18px;
+}
+.swagger-ui .info table th {
+    background: var(--navy);
+    color: #fff;
+    font-weight: 600;
+    text-align: left;
+    padding: 10px 14px;
+}
+.swagger-ui .info table td {
+    padding: 10px 14px;
+    border-top: 1px solid var(--line);
+}
+.swagger-ui .info table tr:nth-child(even) td {
+    background: #f7f9fc;
 }
 
-.swagger-ui .opblock.opblock-get .opblock-summary-method {
-    background: #2e7d6b;
-}
-.swagger-ui .opblock.opblock-post .opblock-summary-method {
-    background: #3a6ea5;
-}
-.swagger-ui .opblock.opblock-put .opblock-summary-method {
-    background: #c98a2b;
-}
-.swagger-ui .opblock.opblock-patch .opblock-summary-method {
-    background: #7a5ea8;
-}
-.swagger-ui .opblock.opblock-delete .opblock-summary-method {
-    background: #b23a3a;
+/* destaque (> aviso) */
+.swagger-ui .info blockquote {
+    margin: 18px 0;
+    padding: 12px 18px;
+    background: #fff6ec;
+    border-left: 5px solid var(--accent);
+    border-radius: 0 8px 8px 0;
 }
 
-.swagger-ui .btn.execute {
-    background-color: #5b3a29;
-    border-color: #5b3a29;
+/* código inline */
+.swagger-ui .info code,
+.swagger-ui .markdown code,
+.swagger-ui .renderedMarkdown code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    background: #e8eef7;
+    color: var(--navy);
+    border-radius: 5px;
+    padding: 2px 7px;
+}
+
+/* ---------- Servidor e Authorize ---------- */
+.swagger-ui .scheme-container {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(29, 53, 87, .06);
+    padding: 18px 24px;
+}
+.swagger-ui .btn.authorize {
+    color: var(--navy);
+    border-color: var(--navy);
+    border-radius: 8px;
+    font-weight: 600;
+}
+.swagger-ui .btn.authorize svg {
+    fill: var(--navy);
+}
+.swagger-ui .btn.authorize:hover {
+    background: var(--navy);
     color: #fff;
 }
+.swagger-ui .btn.authorize:hover svg {
+    fill: #fff;
+}
 
+/* ---------- Grupos (tags) ---------- */
+.swagger-ui .opblock-tag {
+    color: var(--navy);
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 1.35rem;
+    border-bottom: 2px solid var(--line);
+    padding: 14px 8px;
+    transition: background .15s;
+}
+.swagger-ui .opblock-tag:hover {
+    background: rgba(29, 53, 87, .05);
+}
+.swagger-ui .opblock-tag small {
+    color: var(--muted);
+}
+
+/* ---------- Cartões dos endpoints ---------- */
+.swagger-ui .opblock {
+    border-radius: 10px;
+    border-width: 1px;
+    box-shadow: 0 2px 10px rgba(29, 53, 87, .06);
+    margin: 0 0 12px;
+    transition: box-shadow .15s, transform .15s;
+}
+.swagger-ui .opblock:hover {
+    box-shadow: 0 8px 22px rgba(29, 53, 87, .14);
+    transform: translateY(-1px);
+}
+.swagger-ui .opblock .opblock-summary-method {
+    border-radius: 7px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    min-width: 76px;
+    letter-spacing: .03em;
+}
+.swagger-ui .opblock .opblock-summary-path {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+}
+
+.swagger-ui .opblock.opblock-get {
+    background: rgba(46, 125, 107, .07);
+    border-color: #2e7d6b;
+}
+.swagger-ui .opblock.opblock-get .opblock-summary-method { background: #2e7d6b; }
+
+.swagger-ui .opblock.opblock-post {
+    background: rgba(58, 110, 165, .07);
+    border-color: #3a6ea5;
+}
+.swagger-ui .opblock.opblock-post .opblock-summary-method { background: #3a6ea5; }
+
+.swagger-ui .opblock.opblock-put {
+    background: rgba(201, 138, 43, .08);
+    border-color: #c98a2b;
+}
+.swagger-ui .opblock.opblock-put .opblock-summary-method { background: #c98a2b; }
+
+.swagger-ui .opblock.opblock-patch {
+    background: rgba(122, 94, 168, .07);
+    border-color: #7a5ea8;
+}
+.swagger-ui .opblock.opblock-patch .opblock-summary-method { background: #7a5ea8; }
+
+.swagger-ui .opblock.opblock-delete {
+    background: rgba(178, 58, 58, .07);
+    border-color: #b23a3a;
+}
+.swagger-ui .opblock.opblock-delete .opblock-summary-method { background: #b23a3a; }
+
+/* ---------- Botões ---------- */
+.swagger-ui .btn.execute {
+    background-color: var(--navy);
+    border-color: var(--navy);
+    color: #fff;
+    border-radius: 8px;
+    font-weight: 700;
+    padding: 10px 28px;
+}
+.swagger-ui .btn.execute:hover {
+    background-color: var(--accent);
+    border-color: var(--accent);
+    color: var(--navy-dark);
+}
+.swagger-ui .btn.try-out__btn {
+    border-radius: 8px;
+    border-color: var(--navy);
+    color: var(--navy);
+    font-weight: 600;
+}
+
+/* ---------- Respostas e modelos ---------- */
+.swagger-ui .responses-inner h4,
+.swagger-ui .opblock-section-header h4 {
+    color: var(--navy);
+    font-weight: 700;
+}
+.swagger-ui .response-col_status {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+}
+.swagger-ui .highlight-code > .microlight,
+.swagger-ui .microlight {
+    border-radius: 8px;
+}
 .swagger-ui section.models {
-    border: 1px solid #c9a66b;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(29, 53, 87, .06);
+}
+.swagger-ui section.models h4 {
+    color: var(--navy);
+    font-weight: 700;
+}
+.swagger-ui select,
+.swagger-ui input[type=text],
+.swagger-ui textarea {
+    border-radius: 8px;
+}
+
+/* ---------- Rolagem horizontal em telas pequenas ---------- */
+@media (max-width: 700px) {
+    .swagger-ui .info {
+        padding: 20px 16px;
+    }
+    .swagger-ui .info table {
+        display: block;
+        overflow-x: auto;
+    }
 }
