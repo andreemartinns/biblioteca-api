@@ -6,6 +6,8 @@ import com.senac.bibliotecaapi.entity.Livro;
 import com.senac.bibliotecaapi.service.LivroService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -50,7 +52,12 @@ public class LivroController {
         return paraPagedModel(service.buscarPorTitulo(titulo, pageable));
     }
 
-    @Operation(summary = "Buscar livro por ID")
+    @Operation(summary = "Buscar livro por ID",
+            description = "Use o cabeçalho X-API-Version para escolher a versão: 1 (padrão) retorna o livro completo "
+                    + "com links HATEOAS; 2 retorna uma resposta resumida, com o nome da categoria e dos autores.")
+    @Parameter(in = ParameterIn.HEADER, name = "X-API-Version",
+            description = "Versão da API: 1 (completa, com HATEOAS) ou 2 (resumida)",
+            schema = @Schema(allowableValues = {"1", "2"}, defaultValue = "1"))
     @ApiResponse(responseCode = "200", description = "Livro encontrado")
     @ApiResponse(responseCode = "404", description = "Livro não encontrado")
     @GetMapping("/{id}")
@@ -60,9 +67,9 @@ public class LivroController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @Operation(summary = "Buscar livro por ID (versão 2)",
-            description = "Requer o cabeçalho X-API-Version: 2. Retorna uma resposta resumida, com o nome da categoria "
-                    + "e os nomes dos autores. Sem o cabeçalho, ou com o valor 1, é usada a versão 1.")
+    @Operation(summary = "Buscar livro por ID (versões 1 e 2)",
+            description = "Escolha a versão pelo cabeçalho X-API-Version. Valor 1 (padrão): livro completo com links "
+                    + "HATEOAS. Valor 2: resposta resumida, com o nome da categoria e dos autores.")
     @ApiResponse(responseCode = "200", description = "OK: livro encontrado")
     @ApiResponse(responseCode = "404", description = "Not Found: livro não encontrado")
     @GetMapping(value = "/{id}", headers = "X-API-Version=2")
@@ -73,7 +80,7 @@ public class LivroController {
                         l.getTitulo(),
                         l.getIsbn(),
                         l.getAnoPublicacao(),
-                        l.getCategoria().getNome(),
+                        l.getCategoria() != null ? l.getCategoria().getNome() : null,
                         l.getAutores().stream().map(Autor::getNome).toList())))
                 .orElse(ResponseEntity.notFound().build());
     }
