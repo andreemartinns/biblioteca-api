@@ -44,6 +44,7 @@ body {
     font-weight: 700;
     font-size: 1.1rem;
     letter-spacing: .01em;
+    white-space: nowrap;
 }
 
 /* ---------- Cabeçalho (hero) ---------- */
