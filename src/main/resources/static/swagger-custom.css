@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:wght@600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
 
 :root {
     --bg: #120d0a;
@@ -13,12 +13,12 @@
     --field-text: #2a2119;
     --code-bg: #0c0806;
     --sans: 'Inter', system-ui, sans-serif;
-    --serif: 'Lora', Georgia, serif;
+    --serif: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
     --mono: 'JetBrains Mono', monospace;
 }
 
 /* ---------- Pagina e video ---------- */
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
 body { margin: 0; background: var(--bg); font-family: var(--sans); }
 
 .fundo-video {
@@ -28,26 +28,40 @@ body { margin: 0; background: var(--bg); font-family: var(--sans); }
 }
 .fundo-video iframe {
     position: absolute; top: 50%; left: 50%;
-    width: 100vw; height: 56.25vw;
-    min-height: 100vh; min-width: 177.78vh;
+    width: 140vw; height: 78.75vw;
+    min-width: 249vh; min-height: 140vh;
     transform: translate(-50%, -50%);
-    border: 0;
-}
-@keyframes veu {
-    0%, 70% { background: rgba(10, 7, 5, 1); }
-    100%    { background: rgba(10, 7, 5, .38); }
-}
-.fundo-video::after {
-    content: ""; position: absolute; inset: 0;
-    background: rgba(10, 7, 5, 1);
-    animation: veu 5s ease forwards;
-}
-@media (prefers-reduced-motion: reduce) {
-    .fundo-video iframe { display: none; }
-    .fundo-video::after { animation: none; background: var(--bg); }
+    border: 0; pointer-events: none;
 }
 
-.swagger-ui { font-family: var(--sans); color: var(--cream); }
+/* véu fixo e leve sobre o vídeo */
+.fundo-video::after {
+    content: ""; position: absolute; inset: 0;
+    background: rgba(10, 7, 5, .42);
+}
+
+/* loading: cobre a tela enquanto o vídeo carrega e some sozinho */
+body::before {
+    content: ""; position: fixed; inset: 0; z-index: 9998;
+    background: #0c0806; pointer-events: none;
+    animation: sumir .7s ease 3.6s forwards;
+}
+body::after {
+    content: ""; position: fixed; top: 50%; left: 50%;
+    width: 44px; height: 44px; margin: -22px 0 0 -22px;
+    border: 3px solid rgba(226, 176, 102, .25);
+    border-top-color: var(--amber);
+    border-radius: 50%; z-index: 9999; pointer-events: none;
+    animation: girar .9s linear infinite, sumir .7s ease 3.6s forwards;
+}
+@keyframes girar { to { transform: rotate(360deg); } }
+@keyframes sumir { to { opacity: 0; visibility: hidden; } }
+
+@media (prefers-reduced-motion: reduce) {
+    .fundo-video iframe { display: none; }
+}
+
+.swagger-ui { font-family: var(--sans); color: var(--cream); font-size: 15px; }
 .swagger-ui .wrapper { max-width: 1000px; padding: 0 24px; }
 
 /* Texto claro em tudo (peso zero, os ajustes abaixo vencem) */
@@ -70,13 +84,14 @@ body { margin: 0; background: var(--bg); font-family: var(--sans); }
 .swagger-ui .topbar-wrapper a span { display: none; }
 .swagger-ui .topbar-wrapper a::after {
     content: "Biblioteca Comunitária";
-    color: var(--cream); font-family: var(--serif); font-weight: 700; font-size: 1.2rem; white-space: nowrap;
+    color: var(--cream); font-family: var(--serif); font-weight: 800; font-size: 1.2rem;
+    letter-spacing: -0.01em; white-space: nowrap;
 }
 .swagger-ui .topbar-wrapper::after {
     content: "Documentação da API";
     margin-left: 16px; padding-left: 16px;
     border-left: 1px solid var(--line);
-    color: var(--amber); font-size: 13px; font-weight: 500; letter-spacing: .04em;
+    color: var(--amber); font-size: 12.5px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
 }
 
 /* ---------- Paineis (vidro escuro) ---------- */
@@ -96,8 +111,8 @@ body { margin: 0; background: var(--bg); font-family: var(--sans); }
     border-bottom: 1px solid var(--line);
 }
 .swagger-ui .info .title {
-    margin: 0; font-family: var(--serif); font-weight: 700;
-    font-size: 2.3rem; line-height: 1.25;
+    margin: 0; font-family: var(--serif); font-weight: 800;
+    font-size: 2.4rem; line-height: 1.15; letter-spacing: -0.03em;
 }
 .swagger-ui .info .title small {
     background: transparent; border: 1px solid var(--line); border-radius: 6px;
@@ -120,16 +135,16 @@ body { margin: 0; background: var(--bg); font-family: var(--sans); }
 
 /* ---------- Texto ---------- */
 .swagger-ui .info p, .swagger-ui .info li, .swagger-ui .info td, .swagger-ui .info th {
-    font-family: var(--sans); font-size: 15.5px; line-height: 1.75;
+    font-family: var(--sans); font-size: 16px; line-height: 1.8; letter-spacing: -0.003em;
 }
 .swagger-ui .wrapper .info a { color: var(--amber) !important; }
 .swagger-ui .info .renderedMarkdown h1 {
-    font-family: var(--serif); font-weight: 700; font-size: 1.6rem; margin: 24px 0 8px;
+    font-family: var(--serif); font-weight: 800; font-size: 1.7rem; letter-spacing: -0.025em; margin: 24px 0 8px;
 }
 .swagger-ui .info .renderedMarkdown h2 {
     display: flex; align-items: center; gap: 14px;
     margin: 40px 0 14px; padding-bottom: 12px;
-    font-family: var(--serif); font-weight: 700; font-size: 1.4rem;
+    font-family: var(--serif); font-weight: 800; font-size: 1.45rem; letter-spacing: -0.02em;
     border-bottom: 1px solid var(--line);
     counter-increment: sec;
 }
@@ -141,7 +156,7 @@ body { margin: 0; background: var(--bg); font-family: var(--sans); }
     color: var(--amber);
     font-family: var(--mono); font-size: .8rem; font-weight: 600; letter-spacing: .04em;
 }
-.swagger-ui .info .renderedMarkdown h3 { font-family: var(--serif); font-weight: 700; }
+.swagger-ui .info .renderedMarkdown h3 { font-family: var(--serif); font-weight: 700; letter-spacing: -0.015em; }
 .swagger-ui .info ol, .swagger-ui .info ul { padding-left: 22px; }
 .swagger-ui .info li::marker { color: var(--amber); font-weight: 700; }
 
@@ -193,19 +208,28 @@ body { margin: 0; background: var(--bg); font-family: var(--sans); }
     transition: background .2s;
 }
 .swagger-ui .btn.authorize svg { fill: #1a120d; }
-.swagger-ui .btn.authorize:hover { background: #f0c07a; }
+.swagger-ui .btn.authorize:hover,
+.swagger-ui .btn.authorize:focus {
+    background: #f0c07a !important;
+    color: #1a120d !important;
+    border-color: #f0c07a !important;
+}
+.swagger-ui .btn.authorize:hover span,
+.swagger-ui .btn.authorize:focus span { color: #1a120d !important; }
+.swagger-ui .btn.authorize:hover svg,
+.swagger-ui .btn.authorize:focus svg { fill: #1a120d !important; }
 
 /* ---------- Grupos ---------- */
 .swagger-ui .opblock-tag-section { margin-bottom: 12px; }
 .swagger-ui .opblock-tag {
-    font-family: var(--serif); font-weight: 700; font-size: 1.35rem;
+    font-family: var(--serif); font-weight: 800; font-size: 1.35rem; letter-spacing: -0.02em;
     padding: 16px 22px; margin: 26px 0 12px;
     background: var(--panel);
     -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
     border: 1px solid var(--line); border-left: 5px solid var(--amber); border-radius: 12px;
 }
 .swagger-ui .opblock-tag:hover { background: rgba(40, 28, 20, .85); }
-.swagger-ui .wrapper .opblock-tag small { color: var(--cream-2) !important; font-family: var(--sans); font-weight: 400; }
+.swagger-ui .wrapper .opblock-tag small { color: var(--cream-2) !important; font-family: var(--sans); font-weight: 400; letter-spacing: 0; }
 .swagger-ui .opblock-tag svg, .swagger-ui .opblock-summary-control svg, .swagger-ui .model-toggle::after { fill: var(--amber); }
 
 /* ---------- Endpoints ---------- */
@@ -219,7 +243,7 @@ body { margin: 0; background: var(--bg); font-family: var(--sans); }
     min-width: 80px; padding: 7px 0; letter-spacing: .06em; text-shadow: none; color: #fff;
 }
 .swagger-ui .opblock .opblock-summary-path { font-family: var(--mono); font-weight: 600; font-size: 14.5px; }
-.swagger-ui .wrapper .opblock .opblock-summary-description { color: var(--cream-2) !important; }
+.swagger-ui .wrapper .opblock .opblock-summary-description { color: var(--cream-2) !important; font-size: 14px; }
 .swagger-ui .opblock .opblock-section-header { background: rgba(0,0,0,.30); box-shadow: none; border-bottom: 1px solid var(--line); }
 
 .swagger-ui .opblock.opblock-get    { border-left-color: #3f9d6f; background: var(--panel); }
@@ -272,7 +296,7 @@ body { margin: 0; background: var(--bg); font-family: var(--sans); }
 /* ---------- Modelos ---------- */
 .swagger-ui section.models { margin: 34px 0 60px; }
 .swagger-ui section.models.is-open h4 { border-bottom: 1px solid var(--line); }
-.swagger-ui section.models h4 { font-family: var(--serif); font-weight: 700; }
+.swagger-ui section.models h4 { font-family: var(--serif); font-weight: 800; letter-spacing: -0.02em; }
 .swagger-ui .model-container, .swagger-ui section.models .model-container { background: rgba(0,0,0,.28); border-radius: 8px; }
 
 /* ---------- Janela do Authorize ---------- */
@@ -281,7 +305,7 @@ body { margin: 0; background: var(--bg); font-family: var(--sans); }
     box-shadow: 0 30px 80px rgba(0,0,0,.7); overflow: hidden;
 }
 .swagger-ui .dialog-ux .modal-ux-header { background: #0c0806; border-bottom: 2px solid var(--amber); padding: 14px 20px; }
-.swagger-ui .dialog-ux .modal-ux-header h3 { font-family: var(--serif); }
+.swagger-ui .dialog-ux .modal-ux-header h3 { font-family: var(--serif); font-weight: 800; }
 .swagger-ui .dialog-ux .modal-ux-header .close-modal svg { fill: var(--amber); }
 
 /* ---------- Barra de rolagem ---------- */
@@ -294,22 +318,9 @@ body { margin: 0; background: var(--bg); font-family: var(--sans); }
 @media (max-width: 760px) {
     .swagger-ui .wrapper { padding: 0 12px; }
     .swagger-ui .info hgroup.main { padding: 26px 20px 20px; }
-    .swagger-ui .info .title { font-size: 1.6rem; }
+    .swagger-ui .info .title { font-size: 1.7rem; }
     .swagger-ui .info .description { padding: 8px 20px 24px; }
     .swagger-ui .info table { display: block; overflow-x: auto; }
     .swagger-ui .topbar-wrapper::after { display: none; }
     .swagger-ui .btn.authorize { right: 12px; padding: 7px 14px; }
-}
-
-/* esconde o play/avançar do YouTube: iframe maior que a tela, controles ficam fora de vista */
-.fundo-video iframe {
-    width: 140vw; height: 78.75vw;
-    min-width: 249vh; min-height: 140vh;
-}
-/* cortina fixa por cima do centro, onde o YouTube desenha o play */
-.fundo-video::before {
-    content: ""; position: absolute; z-index: 2;
-    top: 50%; left: 50%; width: 360px; height: 160px;
-    transform: translate(-50%, -50%);
-    background: radial-gradient(ellipse, rgba(10,7,5,.97) 0%, rgba(10,7,5,.97) 55%, transparent 100%);
 }
