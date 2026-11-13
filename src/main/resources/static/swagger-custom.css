@@ -379,3 +379,41 @@ body::after {
 
 /* setinhas */
 .swagger-ui section.models svg { fill: var(--amber) !important; }
+
+/* =====================================================
+   Modal Authorize: botao de dentro do modal no fluxo normal
+   ===================================================== */
+.swagger-ui .dialog-ux .modal-ux .btn.authorize {
+    position: static !important;
+    top: auto !important;
+    right: auto !important;
+    z-index: auto !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 10px 0 0;
+}
+
+/* modal e fundo escurecido acima da barra e do botao fixo */
+.swagger-ui .dialog-ux { z-index: 10000 !important; }
+.swagger-ui .dialog-ux .backdrop-ux { background: rgba(8, 5, 3, .75) !important; }
+.swagger-ui .dialog-ux .modal-ux { z-index: 10001 !important; }
+
+/* textos do modal legiveis */
+.swagger-ui .dialog-ux .modal-ux-header h3,
+.swagger-ui .dialog-ux .modal-ux-content h4,
+.swagger-ui .dialog-ux .modal-ux-content p,
+.swagger-ui .dialog-ux .modal-ux-content label {
+    color: var(--cream) !important;
+}
+
+/* botao Close do modal */
+.swagger-ui .dialog-ux .modal-ux-content .btn.modal-btn {
+    border: 1px solid var(--line);
+    color: var(--cream);
+    background: transparent;
+}
+.swagger-ui .dialog-ux .modal-ux-content .btn.modal-btn:hover {
+    border-color: var(--amber);
+    color: var(--amber);
+}
