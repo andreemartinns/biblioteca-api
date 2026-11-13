@@ -324,3 +324,38 @@ body::after {
     .swagger-ui .topbar-wrapper::after { display: none; }
     .swagger-ui .btn.authorize { right: 12px; padding: 7px 14px; }
 }
+
+/* ---------- Schemas: fundo escuro e texto legivel (deve ficar no final) ---------- */
+.swagger-ui section.models .model-container,
+.swagger-ui section.models .model-container * {
+    background-color: transparent !important;
+    background-image: none !important;
+    box-shadow: none !important;
+}
+
+.swagger-ui .wrapper section.models .model-container {
+    background-color: rgba(0,0,0,.28) !important;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    margin: 0 0 10px;
+    padding: 10px 16px;
+}
+
+/* nome do schema */
+.swagger-ui .wrapper section.models .model-container button,
+.swagger-ui .wrapper section.models .model-container button *,
+.swagger-ui .wrapper section.models .model-title,
+.swagger-ui .wrapper section.models .model-title__text {
+    color: var(--amber) !important;
+    font-family: var(--mono);
+    font-weight: 600;
+    font-size: 14.5px;
+}
+
+/* "Expand all" e tipos */
+.swagger-ui .wrapper section.models .model-box-control + span,
+.swagger-ui .wrapper section.models .prop-format { color: var(--cream-2) !important; }
+.swagger-ui .wrapper section.models .prop-type { color: #8fc3e8 !important; font-family: var(--mono); }
+
+/* setinhas */
+.swagger-ui section.models svg { fill: var(--amber) !important; }
