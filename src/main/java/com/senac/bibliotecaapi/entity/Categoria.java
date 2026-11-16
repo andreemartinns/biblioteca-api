@@ -1,10 +1,14 @@
 package com.senac.bibliotecaapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Schema(description = "Categoria literária usada para classificar os livros do acervo")
 @Entity
@@ -22,6 +26,11 @@ public class Categoria {
     @Column(nullable = false, unique = true)
     private String nome;
 
+    @Schema(hidden = true)
+    @JsonIgnore
+    @OneToMany(mappedBy = "categoria")
+    private List<Livro> livros = new ArrayList<>();
+
     public Categoria() {
     }
 
@@ -34,4 +43,7 @@ public class Categoria {
 
     public String getNome() { return nome; }
     public void setNome(String nome) { this.nome = nome; }
+
+    public List<Livro> getLivros() { return livros; }
+    public void setLivros(List<Livro> livros) { this.livros = livros; }
 }
