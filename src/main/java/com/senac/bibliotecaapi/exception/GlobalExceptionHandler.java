@@ -4,8 +4,10 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -43,7 +45,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(corpo);
     }
 
-    // JSON malformado ou tipo errado no corpo (ex: número onde deveria ser texto)
+    // JSON malformado ou tipo errado no corpo
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<Map<String, Object>> tratarJsonInvalido(HttpMessageNotReadableException ex) {
         Map<String, Object> corpo = new LinkedHashMap<>();
@@ -61,6 +63,26 @@ public class GlobalExceptionHandler {
         corpo.put("status", 400);
         corpo.put("erro", "Valor inválido para o parâmetro '" + ex.getName() + "'");
         return ResponseEntity.badRequest().body(corpo);
+    }
+
+    // Parâmetro obrigatório ausente (ex: /livros/busca sem ?titulo=)
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public ResponseEntity<Map<String, Object>> tratarParametroAusente(MissingServletRequestParameterException ex) {
+        Map<String, Object> corpo = new LinkedHashMap<>();
+        corpo.put("timestamp", LocalDateTime.now());
+        corpo.put("status", 400);
+        corpo.put("erro", "Parâmetro obrigatório ausente: '" + ex.getParameterName() + "'");
+        return ResponseEntity.badRequest().body(corpo);
+    }
+
+    // Content-Type não suportado (ex: enviar texto em vez de JSON)
+    @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
+    public ResponseEntity<Map<String, Object>> tratarMediaType(HttpMediaTypeNotSupportedException ex) {
+        Map<String, Object> corpo = new LinkedHashMap<>();
+        corpo.put("timestamp", LocalDateTime.now());
+        corpo.put("status", 415);
+        corpo.put("erro", "Unsupported Media Type: use Content-Type application/json");
+        return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).body(corpo);
     }
 
     // Rota inexistente

@@ -26,6 +26,8 @@ public class RateLimitFilter extends OncePerRequestFilter {
         }
     }
 
+    private static final int LIMITE_PARA_LIMPEZA = 10_000;
+
     private final Map<String, Janela> janelas = new ConcurrentHashMap<>();
 
     @Value("${app.rate-limit.max-requests:30}")
@@ -44,13 +46,18 @@ public class RateLimitFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain)
             throws ServletException, IOException {
 
-        String chaveApi = req.getHeader("X-API-Key");
-        String cliente = (chaveApi != null && !chaveApi.isBlank())
-                ? "key:" + chaveApi
-                : "ip:" + req.getRemoteAddr();
+        // Conta sempre por IP: o valor do X-API-Key ainda não foi validado neste ponto,
+        // então usá-lo como identificador permitiria burlar o limite com chaves falsas.
+        String cliente = "ip:" + req.getRemoteAddr();
 
         long agora = System.currentTimeMillis();
         long duracao = janelaSegundos * 1000L;
+
+        // Evita que o mapa cresça indefinidamente
+        if (janelas.size() > LIMITE_PARA_LIMPEZA) {
+            janelas.values().removeIf(j -> agora - j.inicio >= duracao);
+        }
+
         Janela janela = janelas.computeIfAbsent(cliente, k -> new Janela(agora));
 
         boolean bloqueado;

@@ -59,12 +59,14 @@ Todas as listagens são paginadas (`?page=0&size=10&sort=nome,asc`) e retornam l
 
 ## Tratamento de erros
 
-- 400: dados inválidos ou cabeçalho obrigatório ausente
+- 400: dados inválidos, parâmetro obrigatório ausente ou cabeçalho obrigatório ausente
 - 401: API key ausente, inválida ou revogada
 - 403: chave sem nível de acesso suficiente ou origem CORS não permitida
 - 404: recurso ou rota não encontrados
 - 405: método HTTP não suportado
-- 409: conflito (valor duplicado ou registro em uso)
+- 409: conflito (valor duplicado, registro em uso ou chave de idempotência em processamento)
+- 415: Content-Type não suportado (use `application/json`)
+- 422: chave de idempotência reutilizada com um corpo diferente
 - 429: limite de requisições excedido
 - 500: erro interno
 
@@ -79,10 +81,13 @@ Ordem dos filtros: CORS → Rate Limit → API Key → Idempotência → Control
 
 ### 1. Idempotência (`X-Idempotency-Key`)
 
-Evita que o mesmo POST seja processado duas vezes. Se o cliente repetir a requisição com a mesma chave, a API devolve a resposta original com o cabeçalho `Idempotent-Replayed: true`, sem criar um novo registro.
+Evita que o mesmo POST seja processado duas vezes. Se o cliente repetir a requisição com a mesma chave e o mesmo corpo, a API devolve a resposta original com o cabeçalho `Idempotent-Replayed: true`, sem criar um novo registro.
 
 - **Obrigatório** em `POST /emprestimos` (sem o cabeçalho: `400 Bad Request`).
 - Opcional nos demais POSTs.
+- Mesma chave com corpo diferente: `422 Unprocessable Entity`.
+- Mesma chave enquanto a primeira requisição ainda está sendo processada: `409 Conflict`.
+- Apenas respostas de sucesso (2xx) são guardadas. Se der erro, a chave é liberada e o cliente pode tentar de novo.
 - As respostas ficam guardadas por 1 hora (`app.idempotency.ttl-seconds`).
 
 ### 2. API Key (`X-API-Key`)
@@ -98,10 +103,13 @@ Evita que o mesmo POST seja processado duas vezes. Se o cliente repetir a requis
 - Chave ausente ou inválida: `401 Unauthorized`.
 - Chave válida sem permissão: `403 Forbidden`.
 - Chave de demonstração ADMIN: `admin-demo-key-123` (recriada a cada inicialização).
+- Nenhum cliente consegue gerar uma chave ADMIN: o endpoint público só recebe o nome do dono.
 
 ### 3. Rate Limiting
 
-Limite de 30 requisições por 60 segundos por cliente (identificado pela API Key ou, na falta dela, pelo IP). Ao exceder, a API retorna `429 Too Many Requests` com o cabeçalho `Retry-After`. Todas as respostas trazem `X-RateLimit-Limit` e `X-RateLimit-Remaining`. Os valores são configuráveis em `application.properties`.
+Limite de 30 requisições por 60 segundos por **IP** do cliente (janela fixa). O IP é usado, e não a API Key, porque o filtro roda antes da validação da chave: usar a chave como identificador permitiria burlar o limite enviando chaves falsas diferentes. Na Render, o IP real vem do cabeçalho `X-Forwarded-For` (`server.forward-headers-strategy=native`).
+
+Ao exceder, a API retorna `429 Too Many Requests` com o cabeçalho `Retry-After` (segundos até liberar). Todas as respostas trazem `X-RateLimit-Limit` e `X-RateLimit-Remaining`. Os valores são configuráveis em `application.properties`.
 
 ### 4. CORS
 
@@ -115,7 +123,7 @@ Origens permitidas: `https://biblioteca-front-two.vercel.app`, `http://localhost
 
 ### Limitações
 
-Chaves, idempotência e rate limit ficam em memória e são zerados ao reiniciar a aplicação. Em produção, usaria Redis e um banco persistente.
+Chaves, idempotência e rate limit ficam em memória e são zerados ao reiniciar a aplicação. Em produção, usaria Redis e um banco persistente. As chaves de API são guardadas em texto puro; em produção seriam guardadas como hash.
 
 ## Front-end
 
