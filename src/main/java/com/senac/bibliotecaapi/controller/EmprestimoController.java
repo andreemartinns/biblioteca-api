@@ -6,6 +6,8 @@ import com.senac.bibliotecaapi.service.EmprestimoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -61,12 +63,24 @@ public class EmprestimoController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @Operation(summary = "Registrar empréstimo", description = "Cria o empréstimo com status ATIVO")
+    @Operation(summary = "Registrar empréstimo",
+            description = "Cria o empréstimo com status ATIVO. O usuário e o livro devem já existir: envie apenas o id de cada um.")
     @ApiResponse(responseCode = "201", description = "Empréstimo registrado")
     @ApiResponse(responseCode = "400", description = "Dados inválidos")
+    @ApiResponse(responseCode = "409", description = "Chave de idempotência em processamento")
+    @ApiResponse(responseCode = "422", description = "Chave de idempotência já usada com outro corpo")
     @Parameter(in = ParameterIn.HEADER, name = "X-Idempotency-Key", required = true,
             description = "Chave única da operação (ex.: um UUID). Repetir a mesma chave não cria um novo empréstimo.",
             example = "a3f1c2d4-5b6e-4f7a-8b9c-0d1e2f3a4b5c")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(
+            content = @Content(mediaType = "application/json",
+                    examples = @ExampleObject(name = "Exemplo", value = """
+                            {
+                              "usuario": { "id": 1 },
+                              "livro": { "id": 1 },
+                              "dataPrevista": "2026-12-20"
+                            }
+                            """)))
     @PostMapping
     public ResponseEntity<EntityModel<Emprestimo>> criar(@Valid @RequestBody Emprestimo emprestimo) {
         Emprestimo salvo = service.salvar(emprestimo);
