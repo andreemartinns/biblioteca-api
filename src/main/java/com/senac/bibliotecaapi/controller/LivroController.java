@@ -4,6 +4,7 @@ import com.senac.bibliotecaapi.dto.LivroV2;
 import com.senac.bibliotecaapi.entity.Autor;
 import com.senac.bibliotecaapi.entity.Livro;
 import com.senac.bibliotecaapi.service.LivroService;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -54,12 +55,12 @@ public class LivroController {
 
     // ---------- VERSIONAMENTO: GET /livros/{id} ----------
 
-    @Operation(summary = "Buscar livro por ID (v1)",
-            description = "Versão 1 (padrão): livro completo com links HATEOAS. "
-                    + "Usada quando o cabeçalho X-API-Version não é enviado ou vale 1.")
+    @Operation(summary = "Buscar livro por ID",
+            description = "Use o cabeçalho X-API-Version para escolher a versão: 1 (padrão) retorna o livro completo "
+                    + "com links HATEOAS; 2 retorna uma resposta resumida, com o nome da categoria e dos autores.")
     @Parameter(in = ParameterIn.HEADER, name = "X-API-Version",
-            description = "Versão da API: 1 (completa, com HATEOAS)",
-            schema = @Schema(allowableValues = {"1"}, defaultValue = "1"))
+            description = "Versão da API: 1 (completa, com HATEOAS) ou 2 (resumida)",
+            schema = @Schema(allowableValues = {"1", "2"}, defaultValue = "1"))
     @ApiResponse(responseCode = "200", description = "Livro encontrado")
     @ApiResponse(responseCode = "404", description = "Livro não encontrado")
     @GetMapping("/{id}")
@@ -69,14 +70,9 @@ public class LivroController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @Operation(summary = "Buscar livro por ID (v2)",
-            description = "Versão 2: resposta resumida, com o nome da categoria e dos autores. "
-                    + "Exige o cabeçalho X-API-Version: 2.")
-    @Parameter(in = ParameterIn.HEADER, name = "X-API-Version", required = true,
-            description = "Versão da API: 2 (resumida)",
-            schema = @Schema(allowableValues = {"2"}, defaultValue = "2"))
-    @ApiResponse(responseCode = "200", description = "Livro encontrado")
-    @ApiResponse(responseCode = "404", description = "Livro não encontrado")
+    // v2 (X-API-Version: 2): resumida. Oculta no Swagger para não duplicar o caminho;
+    // o swagger-docs.html mostra a V2 pelo seletor.
+    @Hidden
     @GetMapping(value = "/{id}", headers = "X-API-Version=2")
     public ResponseEntity<LivroV2> buscarV2(@PathVariable Long id) {
         return service.buscarPorId(id)
